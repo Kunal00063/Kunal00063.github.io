@@ -1,70 +1,44 @@
-// Theme Toggle
-const themeToggle = document.getElementById('theme-toggle');
-const body = document.body;
+// Select the theme toggle button
+const themeToggleButton = document.getElementById("theme-toggle");
 
-themeToggle.addEventListener('click', () => {
-    body.classList.toggle('light-theme');
-    themeToggle.textContent = body.classList.contains('light-theme') ? '🌞' : '🌙';
-});
-
-// Typewriter Effect
-const tagline = document.getElementById('tagline');
-const text = "Medical Physicist cum Radiation Safety Officer";
-let index = 0;
-
-function typeWriter() {
-    if (index < text.length) {
-        tagline.textContent += text.charAt(index);
-        index++;
-        setTimeout(typeWriter, 50);
+// Function to toggle the theme between light and dark
+function toggleTheme() {
+    const body = document.body;
+    const isDarkTheme = body.classList.toggle("light-theme");
+    if (isDarkTheme) {
+        themeToggleButton.textContent = "🌞"; // Light mode icon
+    } else {
+        themeToggleButton.textContent = "🌙"; // Dark mode icon
     }
 }
 
-typeWriter();
+// Add event listener to the theme toggle button
+themeToggleButton.addEventListener("click", toggleTheme);
 
-// Smooth Scroll Animations
-const sections = document.querySelectorAll('.fade-in');
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-        }
+// Smooth scrolling for navigation (if needed for internal links)
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener("click", function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth"
+        });
     });
-}, { threshold: 0.1 });
-
-sections.forEach(section => {
-    observer.observe(section);
 });
 
-// Back to Top Button
-const backToTopButton = document.getElementById('back-to-top');
+// Handle form submission (basic example)
+const contactForm = document.getElementById("contact-form");
 
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-        backToTopButton.style.display = 'block';
-    } else {
-        backToTopButton.style.display = 'none';
-    }
-});
+contactForm.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the default form submission behavior
 
-backToTopButton.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+    // Get form values
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message").value;
 
-// Contact Form Validation
-const contactForm = document.getElementById('contact-form');
-
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const message = document.getElementById('message').value;
-
-    if (name && email && message) {
-        alert('Thank you for your message!');
-        contactForm.reset();
-    } else {
-        alert('Please fill out all fields.');
-    }
+    // Display a success message (you can replace this with your backend logic)
+    alert(`Thank you, ${name}! Your message has been sent.`);
+    
+    // Optionally, clear the form after submission
+    contactForm.reset();
 });
